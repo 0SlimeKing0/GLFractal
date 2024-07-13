@@ -1,10 +1,12 @@
+#include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
 
 #include "context.h"
 #include "shader.h"
 
-ContextUPtr Context::Create() {
+ContextUPtr Context::Create(Cam2DUPtr& _cam) {
     ContextUPtr context = ContextUPtr(new Context());
+    context->cam = std::move(_cam);
     if (!context->Init()) {
         SPDLOG_ERROR("Failed to initialize context.");
         return nullptr;
@@ -17,7 +19,11 @@ void Context::Render() const {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    cam->ProcessInput();
+    
     glUseProgram(shaderProgram);
+    glUniform3fv(camPosLocation, 1, glm::value_ptr(cam->pos));
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -68,9 +74,11 @@ bool Context::Init() {
     glDeleteShader(fragShader->Get());
 
     int screenRatio = glGetUniformLocation(shaderProgram, "screenRatio");
+    camPosLocation = glGetUniformLocation(shaderProgram, "camPos");
 
     glUseProgram(shaderProgram);
     glUniform1f(screenRatio, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT);
+    glUniform3fv(camPosLocation, 1, glm::value_ptr(cam->pos));
 
     return true;
 }

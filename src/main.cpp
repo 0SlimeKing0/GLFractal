@@ -32,7 +32,8 @@ int main(int argv, char* argc[]) {
     OnWindowSizeCallback(window, WINDOW_WIDTH, WINDOW_HEIGHT);
     glfwSetWindowSizeCallback(window, OnWindowSizeCallback);
 
-    ContextUPtr context = Context::Create();
+    auto cam = Cam2D::CreateFromWindow(window);
+    ContextUPtr context = Context::Create(cam);
 
     while(!glfwWindowShouldClose(window))
     {

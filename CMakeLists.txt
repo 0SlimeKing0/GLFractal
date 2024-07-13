@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME} src/main.cpp
     src/common.h src/common.cpp
     src/context.h src/context.cpp
     src/shader.h src/shader.cpp
+    src/cam2d.h src/cam2d.cpp
 )
 
 # 우리 프로젝트에 include / lib 관련 옵션 추가

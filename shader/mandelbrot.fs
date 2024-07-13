@@ -4,13 +4,14 @@ out vec4 FragColor;
 in vec2 uv;
 
 uniform float screenRatio;
+uniform vec3 camPos;
 
 vec2 cPow(vec2 c) {
     return vec2(c.x*c.x - c.y*c.y, 2.*c.x*c.y);
 }
 
 void main() {
-    vec2 c = vec2(uv.x * screenRatio, uv.y) - vec2(1.0f, 0.0f);
+    vec2 c = vec2(uv.x * screenRatio, uv.y) * camPos.z - vec2(1.0f, 0.0f) + camPos.xy;
     vec2 c0 = c;
 
     for (int i=0; i < 1000; i++) {

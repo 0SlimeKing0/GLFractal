@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
+#include <glm/ext.hpp>
 #include <spdlog/spdlog.h>
 
 #include <memory>
